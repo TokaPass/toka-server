@@ -1,13 +1,28 @@
-import { Hono } from "hono";
-import type { JwtVariables } from 'hono/jwt'
-import initIndexRoutes from "./src/routes/index"
+import { type Context, Hono, type Next } from 'hono';
+import { cors } from 'hono/cors';
+import AuthRoute from './src/controllers/auth.controller';
+import UsersRoute from './src/controllers/user.controller';
 
-type Variables = JwtVariables;
+const app = new Hono();
 
-const app = new Hono<{ Variables: Variables }>();
+app.use('*', async (ctx: Context, next: Next): Promise<void | Response> => {
+    return await cors({
+        origin: [ctx.env.CLIENT_ORIGIN_URL],
+        credentials: true,
+    })(ctx, next);
+});
 
-//@ts-ignore
-// if someone knows how to fix this please help me
-initIndexRoutes(app);
+app.onError((err, ctx: Context) => {
+    ctx.status(500);
+
+    return ctx.json({
+        success: false,
+        message: err.message,
+        data: null,
+    });
+});
+
+app.route('/auth', AuthRoute);
+app.route('/users', UsersRoute);
 
 export default app;

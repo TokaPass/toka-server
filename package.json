@@ -3,14 +3,15 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest",
-    "drizzle-kit": "^0.22.7"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "drizzle-orm": "^0.31.2",
-    "hono": "^4.4.6"
+    "@prisma/client": "5.15.0",
+    "hono": "^4.4.6",
+    "otplib": "^12.0.1",
+    "prisma": "^5.15.0"
   }
 }
