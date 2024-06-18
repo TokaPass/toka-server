@@ -28,3 +28,5 @@ export class Encryption {
     )
   }
 }
+
+export const algorithm = new Encryption(`${process.env.AES_KEY}`)

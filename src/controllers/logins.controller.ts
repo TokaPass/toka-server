@@ -4,6 +4,7 @@ import { verify } from 'hono/utils/jwt/jwt';
 import prisma from "../lib/prisma"
 import { type TBindings } from '../types/index';
 import { getCookie } from 'hono/cookie';
+import { algorithm } from '../lib/encryption';
 
 const app = new Hono<{ Bindings: TBindings }>();
 
@@ -19,11 +20,14 @@ app.use('*', async (ctx: Context, next: Next): Promise<void | Response> => {
 /** POST /logins/create */
 app.post("/create", async (ctx: Context): Promise<Response> => {
     const { username, password, url } = await ctx.req.json();
-
+/*
     const hashedPassword = await Bun.password.hash(password, {
         algorithm: "bcrypt",
         cost: 10
     })
+*/
+
+    const hashedPassword = algorithm.encrypt(password)
 
     const token = getCookie(ctx, "token")
     if (token) {
@@ -73,9 +77,11 @@ app.get("/get/:id", async (ctx: Context): Promise<Response> => {
       },
     });
 
-    const login = thingy?.logins.find((l) => l.id === id);
+    let login = thingy?.logins.find((l) => l.id === id);
 
-    return ctx.json({ data: login });
+    const decryptedPassword = algorithm.decrypt(login?.pass)
+
+    return ctx.json({ data: { url: login?.url, username: login?.username, password: decryptedPassword } });
 })
 
 app.get("/all", async (ctx: Context): Promise<Response> => {
