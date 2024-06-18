@@ -30,7 +30,7 @@ app.post("/create", async (ctx: Context): Promise<Response> => {
         const { id } = await verify(token, `${process.env.JWT_SECRET}`);
         const user = await prisma.user.findUniqueOrThrow({ where: { id: `${id}` }, select: { id: true, username: true } });
         
-        const thingy = await prisma.user.update({
+        await prisma.user.update({
           where: { id: user.id },
           data: {
             logins: {
