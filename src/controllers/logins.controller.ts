@@ -50,4 +50,47 @@ app.post("/create", async (ctx: Context): Promise<Response> => {
     return ctx.json({ data: "ads" });
 })
 
+app.get("/get/:id", async (ctx: Context): Promise<Response> => {
+    const id = ctx.req.param('id');
+
+    const thingy = await prisma.user.findFirst({
+      where: {
+        logins: {
+          some: {
+            id,
+          },
+        },
+      },
+      select: {
+        logins: {
+          select: {
+            url: true,
+            id: true,
+            username: true,
+            pass: true
+          },
+        },
+      },
+    });
+
+    const login = thingy?.logins.find((l) => l.id === id);
+
+    return ctx.json({ data: login });
+})
+
+app.get("/all", async (ctx: Context): Promise<Response> => {
+    const thingy = await prisma.user.findMany({
+      select: {
+        logins: {
+          select: {
+            url: true,
+            id: true,
+          },
+        },
+      },
+    });
+
+    return ctx.json({ data: thingy });
+})
+
 export default app;
