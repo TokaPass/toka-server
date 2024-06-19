@@ -85,18 +85,20 @@ app.get("/get/:id", async (ctx: Context): Promise<Response> => {
 })
 
 app.get("/all", async (ctx: Context): Promise<Response> => {
-    const thingy = await prisma.user.findMany({
+    const thingy = await prisma.user.findFirst({
       select: {
         logins: {
           select: {
             url: true,
             id: true,
+            pass: true,
+            username: true
           },
         },
       },
     });
 
-    return ctx.json({ data: thingy });
+    return ctx.json({ thingy });
 })
 
 export default app;
