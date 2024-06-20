@@ -175,4 +175,5 @@ dist
 .DS_Store
 
 # Custom
-/prisma/dev.db
+!/prisma/schema.prisma
+/prisma/*
