@@ -98,7 +98,9 @@ app.get("/all", async (ctx: Context): Promise<Response> => {
       },
     });
 
-    return ctx.json({ thingy });
+    const data = thingy?.logins.map((l) => ({ url: l.url, id: l.id, username: l.username, password: algorithm.decrypt(l.pass) }));
+
+    return ctx.json({ data });
 })
 
 export default app;
