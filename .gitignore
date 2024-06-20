@@ -175,5 +175,5 @@ dist
 .DS_Store
 
 # Custom
-!/prisma/schema.prisma
-/prisma/*
+!prisma/schema.prisma
+prisma/*
