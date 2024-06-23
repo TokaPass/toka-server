@@ -4,7 +4,7 @@ import { verify } from 'hono/utils/jwt/jwt';
 import prisma from "../lib/prisma"
 import { type TBindings } from '../types/index';
 import { getCookie } from 'hono/cookie';
-import { algorithm } from '../lib/encryption';
+import { aes256 as algorithm } from '../lib/encryption';
 
 const app = new Hono<{ Bindings: TBindings }>();
 

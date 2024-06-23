@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-export class Encryption {
+export class Aes256Encryption {
   private key: string;
 
   constructor(key: string) {
@@ -29,4 +29,4 @@ export class Encryption {
   }
 }
 
-export const algorithm = new Encryption(`${process.env.AES_KEY}`)
+export const aes256 = new Aes256Encryption(`${process.env.AES_KEY}`)
