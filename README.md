@@ -1,3 +1,6 @@
+# Deprecated
+Backend code moved to [Nexus](https://github.com/TokaPass/nexus) monorepo
+
 # Toka Server
 
 > [!CAUTION]
